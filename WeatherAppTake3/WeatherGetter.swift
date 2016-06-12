@@ -41,16 +41,21 @@ class WeatherGetter {
         let weatherRequestURL = NSURL(string: "\(openWeatherMapBaseURL)?APPID=\(openWeatherMapAPIKey)&q=\(city)")!
         getWeather(weatherRequestURL)
     }
+    func getWeatherByCoordinates(latitude latitude: Double, longitude: Double) {
+        let weatherRequestURL = NSURL(string: "\(openWeatherMapBaseURL)?APPID=\(openWeatherMapAPIKey)&lat=\(latitude)&lon=\(longitude)")!
+        getWeather(weatherRequestURL)
+    }
     
     private func getWeather(weatherRequestURL: NSURL) {
         
         // This is a pretty simple networking task, so the shared session will do.
         let session = NSURLSession.sharedSession()
+        session.configuration.timeoutIntervalForRequest = 3
+        
         
         // The data task retrieves the data.
         let dataTask = session.dataTaskWithURL(weatherRequestURL) {
             (data: NSData?, response: NSURLResponse?, error: NSError?) in
-            
             
             if let networkError = error {
                 // Case 1: Error
